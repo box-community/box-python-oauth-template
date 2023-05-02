@@ -3,11 +3,12 @@
 This is a simple HTTP server that listens for a request from Box OAuth2.0.
 picking up the code and csrf_token from the query string.
 """
-from http.server import BaseHTTPRequestHandler, HTTPServer
 import urllib.parse
 import webbrowser
-from app.box_oauth import oauth_authenticate
-from app.config import AppConfig
+from http.server import BaseHTTPRequestHandler, HTTPServer
+
+from box_oauth import oauth_authenticate
+from config import AppConfig
 
 CSRF_TOKEN_ORIG = ""
 
@@ -23,17 +24,8 @@ class CallbackServer(BaseHTTPRequestHandler):
         and calls for the completion of the OAuth2.0 process.
         """
         self.send_response(200)
+        self.send_header("Content-type", "text/html")
         self.end_headers()
-
-        # self.send_header("Content-type", "text/html")
-        # self.end_headers()
-        # self.wfile.write(
-        #     bytes("<html><head><title>https://pythonbasics.org</title></head>", "utf-8")
-        # )
-        # self.wfile.write(bytes("<p>Request: %s</p>" % self.path, "utf-8"))
-        # self.wfile.write(bytes("<body>", "utf-8"))
-        # self.wfile.write(bytes("<p>This is an example web server.</p>", "utf-8"))
-        # self.wfile.write(bytes("</body></html>", "utf-8"))
 
         params = urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query)
 
@@ -53,7 +45,23 @@ class CallbackServer(BaseHTTPRequestHandler):
         print(f"error_description: {error_description}")
 
         assert state == CSRF_TOKEN_ORIG
-        oauth_authenticate(code, state)
+        oauth_authenticate(code) if code else None
+
+        self.wfile.write(
+            bytes(
+                "<html><head><title>Sample Box SDK oAuth2 Callback</title></head>",
+                "utf-8",
+            )
+        )
+        # self.wfile.write(bytes("<p>Request: %s</p>" % self.path, "utf-8"))
+        self.wfile.write(bytes("<body>", "utf-8"))
+        self.wfile.write(bytes("<h2>oAuth Callback received:</h2>", "utf-8"))
+        self.wfile.write(bytes(f"<h5>Code: {code}</h5>", "utf-8"))
+        self.wfile.write(bytes(f"<h5>State: {state}</h5>", "utf-8"))
+        self.wfile.write(bytes(f"<h5>Error: {error}</h5>", "utf-8"))
+        self.wfile.write(bytes(f"<h5>Error Message: {error_description}</h5>", "utf-8"))
+        self.wfile.write(bytes("<p>You can close this browser window.</p>", "utf-8"))
+        self.wfile.write(bytes("</body></html>", "utf-8"))
 
 
 def callback_handle_request(config: AppConfig, csrf_token: str):

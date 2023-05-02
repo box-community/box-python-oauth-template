@@ -2,9 +2,9 @@
 
 from boxsdk import Client
 
-from app.box_oauth import oauth_from_previous
-from app.oaut_callback import callback_handle_request, open_browser
-from app.config import AppConfig
+from box_oauth import oauth_from_previous
+from oaut_callback import callback_handle_request, open_browser
+from config import AppConfig
 
 
 conf = AppConfig()
