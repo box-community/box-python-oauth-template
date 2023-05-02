@@ -5,9 +5,8 @@ width=40%;>
 
 
 # Sample application using the Box Python SDK and oAuth 2.0
-This is the companion app to illustrate [this medium article](https://medium.com/box-developer-blog/dive-into-the-box-platform-94ced33c2c86). This is a custom portal using Flask and Python to create an example Diver Portal. It uses Box Sign, Box Tasks, and other Box Platform features. Check it out.
+This application is a template to get you started quickly with the Box Python SDK and oAuth 2.0.
 
-These instructions show using a Box JWT application and service account. You may also use OAuth 2.0 or Client Credentials, but the setup steps will differ.
 
 ## Box configuration steps
 
