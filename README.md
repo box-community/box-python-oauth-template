@@ -1,7 +1,8 @@
-<img src="images/box-dev-logo-clip.png" 
+<img src="images/box-dev-logo.png" 
 alt= “box-dev-logo” 
 style="margin-left:-10px;"
 width=40%;>
+
 
 # Sample application using the Box Python SDK and oAuth 2.0
 This is the companion app to illustrate [this medium article](https://medium.com/box-developer-blog/dive-into-the-box-platform-94ced33c2c86). This is a custom portal using Flask and Python to create an example Diver Portal. It uses Box Sign, Box Tasks, and other Box Platform features. Check it out.
