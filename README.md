@@ -16,7 +16,7 @@ These instructions show using a Box JWT application and service account. You may
 3. Making sure you're logged in navigate to the [Box Developer Console](https://app.box.com/developers/console). This will activate your developer account.
 4. Create a new Box application. Select Custom App, fill in the form and then click Next.
 5. Select User Authentication (OAuth 2.0) and then click Create App.
-6. Scroll down to Redirect URIs and add the following redirect URIs:
+6. Scroll down to Redirect URIs and add the following redirect URI:
     - http://127.0.0.1:5000/callback
     - (or whatever you have configured in the .env file)
 7. Check all boxes in application scopes.
