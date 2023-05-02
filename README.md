@@ -55,7 +55,7 @@ code .
 
 ## Run the application 
 
-> Run your server
+
 ```bash
 python app/main.py
 ```
