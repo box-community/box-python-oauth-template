@@ -56,7 +56,7 @@ code .
 
 
 ```bash
-python app/main.py
+python main.py
 ```
 
 The first time you run the application, it should open a web browser window and prompt you to log in to Box. 
