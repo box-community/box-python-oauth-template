@@ -2,8 +2,8 @@
 from datetime import datetime, timedelta
 import json
 import os.path
-from boxsdk import Client, OAuth2
-from config import AppConfig
+from boxsdk import OAuth2
+from app.config import AppConfig
 
 
 def oauth_from_config(config: AppConfig) -> OAuth2:

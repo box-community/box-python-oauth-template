@@ -3,12 +3,13 @@
 This is a simple HTTP server that listens for a request from Box OAuth2.0.
 picking up the code and csrf_token from the query string.
 """
+import logging
 import urllib.parse
 import webbrowser
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-from box_oauth import oauth_authenticate
-from config import AppConfig
+from app.box_oauth import oauth_authenticate
+from app.config import AppConfig
 
 CSRF_TOKEN_ORIG = ""
 
@@ -17,7 +18,7 @@ class CallbackServer(BaseHTTPRequestHandler):
     """
     Creates a mini http request handler to handle a single callback request"""
 
-    def do_GET(self):
+    def do_GET(self):  # pylint: disable=invalid-name
         """
         Gets the redirect call back from Box OAuth2.0
         capturing the code and csrf_token from the query string
@@ -29,7 +30,6 @@ class CallbackServer(BaseHTTPRequestHandler):
 
         params = urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query)
 
-        print(params)
         code = " ".join(params.get("code")) if params.get("code") else None
         state = " ".join(params.get("state")) if params.get("state") else None
         error = " ".join(params.get("error")) if params.get("error") else None
@@ -38,18 +38,18 @@ class CallbackServer(BaseHTTPRequestHandler):
             if params.get("error_description")
             else None
         )
-        # TODO implement proper logging
-        print(f"code: {code}")
-        print(f"state: {state}")
-        print(f"error: {error}")
-        print(f"error_description: {error_description}")
+
+        logging.info("code: %s", code)
+        logging.info("state: %s", state)
+        logging.info("error: %s", error)
+        logging.info("error_description: %s", error_description)
 
         assert state == CSRF_TOKEN_ORIG
-        oauth_authenticate(code) if code else None
+        _ = oauth_authenticate(code) if code else None
 
         self.wfile.write(
             bytes(
-                "<html><head><title>Sample Box SDK oAuth2 Callback</title></head>",
+                "<html><head><title>Sample Box SDK oAuth2 Callback</title></head>",  # noqa: E501
                 "utf-8",
             )
         )
@@ -59,8 +59,12 @@ class CallbackServer(BaseHTTPRequestHandler):
         self.wfile.write(bytes(f"<h5>Code: {code}</h5>", "utf-8"))
         self.wfile.write(bytes(f"<h5>State: {state}</h5>", "utf-8"))
         self.wfile.write(bytes(f"<h5>Error: {error}</h5>", "utf-8"))
-        self.wfile.write(bytes(f"<h5>Error Message: {error_description}</h5>", "utf-8"))
-        self.wfile.write(bytes("<p>You can close this browser window.</p>", "utf-8"))
+        self.wfile.write(
+            bytes(f"<h5>Error Message: {error_description}</h5>", "utf-8")
+        )  # noqa: E501
+        self.wfile.write(
+            bytes("<p>You can close this browser window.</p>", "utf-8")
+        )  # noqa: E501
         self.wfile.write(bytes("</body></html>", "utf-8"))
 
 
@@ -69,15 +73,17 @@ def callback_handle_request(config: AppConfig, csrf_token: str):
     Handles the call back request from Box OAuth2.0
     Creates a simple HTTP server that listens for a request from Box OAuth2.0.
     """
-    global CSRF_TOKEN_ORIG
+    global CSRF_TOKEN_ORIG  # pylint: disable=global-statement
     CSRF_TOKEN_ORIG = csrf_token
 
     web_server = HTTPServer(
         (config.callback_hostname, config.callback_port), CallbackServer
     )
 
-    print(
-        f"Server started http://{config.callback_hostname}:{config.callback_port}"  # noqa: E501
+    logging.info(
+        "Server started http://%s:%s",
+        config.callback_hostname,
+        config.callback_port,
     )
 
     try:
@@ -85,7 +91,7 @@ def callback_handle_request(config: AppConfig, csrf_token: str):
     finally:
         web_server.server_close()
 
-    print("Server stopped.")
+    logging.info("Server stopped.")
 
 
 def open_browser(auth_url: str):
