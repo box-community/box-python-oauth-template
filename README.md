@@ -45,7 +45,7 @@ pip install -r requirements.txt
 cp .env.sample .env
 ```
 
-> Open the code in the code editor of your choice. For example, if you have the appropriate extension installed for VS Code, you can use the below to open the repository. 
+> Open the code in the code editor of your choice.
 ```
 code .
 ```
