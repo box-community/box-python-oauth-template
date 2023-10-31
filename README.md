@@ -10,8 +10,8 @@ This application is a template to get you started quickly with the Box Python SD
 
 ## Box configuration steps
 
-1. Create a Box free account if you don't already have one.
-2. Complete the registration process for a Box developer account.
+1. Create a [Box free account](https://www.box.com/pricing/individual) if you don't already have one.
+2. Complete the registration process by verifying your email and login to Box.
 3. Making sure you're logged in navigate to the [Box Developer Console](https://app.box.com/developers/console). This will activate your developer account.
 4. Create a new Box application. Select Custom App, fill in the form and then click Next.
 5. Select User Authentication (OAuth 2.0) and then click Create App.
@@ -64,7 +64,7 @@ After you log in, it will ask you to authorize the application.
 Once this process is complete you can close the browser window.
 By default the sample app prints the current user's name to the console, and lists the items on the root folder.
 
-The authorization token last for 60 minutes, and the refresh toke for 60 days.
+The authorization token lasts for 60 minutes, and the refresh token for 60 days.
 If you get stuck, you can delete the .outh.json file and reauthorize the application.
 
 ### Questions
